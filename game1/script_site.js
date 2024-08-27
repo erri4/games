@@ -78,6 +78,6 @@ let start = function(){
 		for (let val in obj) {
 			usr += `${val}: ${obj[val]}<br>`;
 		}
-		document.body.innerHTML = `<br><div><h1>history:</h1></div><div class="history">${usr}</div>`;
+		document.body.innerHTML = `<br><div><h1>history:</h1></div><div class="history">${usr}<br><br><button onclick="location.reload()">play again</button></div>`;
 }, Number(`${time}000`))
 }

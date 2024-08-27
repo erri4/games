@@ -14,8 +14,8 @@ h1{
 .flex{
 	display: flex;
 	justify-content: space-between;
-	margin-left: 450px;
-	margin-right: 450px;
+	margin-left: 35%;
+	margin-right: 35%;
 	margin-top: 20px;
 }
 
