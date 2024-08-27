@@ -55,12 +55,12 @@ let start = function(){
 		localStorage.setItem("user", `${left}: ${score_left},<br> ${right}: ${score_right} <br><br> ${localStorage.getItem("user")}`)
 		document.body.innerHTML = `<h1>history
 		</h1><br>
-		<div class="history">${localStorage.getItem("user")}</div>`
+		<div class="history">${localStorage.getItem("user")}<br><br><button onclick="location.reload()">play again</button></div>`
 	}, Number(`${time}000`))
 	document.querySelector("#start_button").disabled = true;
 }
 
-let on_get_score = function(){
+let on_get_score = function(event){
 	if (event.key === "0" || event.key === "1"){
 		if (event.key === "0"){
 			if (document.querySelector("#div_right").classList.contains("green")){
