@@ -1,15 +1,3 @@
-
-let clos = function(){
-	x_speed = dx;
-	y_speed = dy;
-	document.querySelector('#help_cont').innerHTML = `
-		<div id="unvisible">
-			
-		</div>
-	`;
-	document.querySelector('#helper').disabled = false;
-}
-
 let times = 0;
 let w = window.innerWidth;
 let h = window.innerHeight;
@@ -23,11 +11,30 @@ let y = 0;
 let x_speed = 0;
 let y_speed = 0;
 let score_right = 0;
-let move = function() {
+let stopped = false;
+let started = false;
+
+let clos = function(){
+	if (!stopped){
+		x_speed = dx;
+		y_speed = dy;
+		if (started){
+			document.querySelector("#ball_spd").innerHTML = `x speed: ${Math.abs(x_speed)}<br>y speed: ${Math.abs(y_speed)}`;
+		}
+	}
+	document.querySelector('#help_cont').innerHTML = `
+		<div id="unvisible">
+			
+		</div>
+	`;
+	document.querySelector('#helper').disabled = false;
+}
+
+let move = function(e) {
 	let left = document.querySelector("#left");
-	let eve = event.key;
+	let key = e.key;
 	if (x_speed && y_speed) {
-		if (eve === "q") {
+		if (key === "ArrowUp") {
 			if (xl > 10){
 				request2 = window.requestAnimationFrame(() => {
 					xl -= 40;
@@ -35,8 +42,8 @@ let move = function() {
 				});
 			}
 		}
-		else if (eve === "a") {
-			if (xl + 140 < window.innerHeight){
+		else if (key === "ArrowDown") {
+			if (xl + 140 < window.innerHeight - 1){
 				request2 = window.requestAnimationFrame(() => {
 					xl += 40;
 					left.style.top = `${xl}px`;
@@ -45,6 +52,8 @@ let move = function() {
 		}
 	}
 }
+
+document.addEventListener('keypress', move)
 
 function isTouchLeft(ball) {
 	let left = document.querySelector("#left");
@@ -61,64 +70,28 @@ function isTouchLeft(ball) {
 	if (ball_left <= posr && ball_left >= posr - 40){
 		if (xl == ball_top){
 			times ++;
+			document.querySelector('#your_score').innerHTML = `your score: ${times}`;
 			if (times % 10 === 0){
-				if (x_speed > 0){
-					x_speed ++;
-				}
-				if (x_speed < 0){
-					x_speed -= 1;
-				}
-				if (dx > 0){
-					dx ++;
-				}
-				if (dx < 0){
-					dx -= 1;
-				}
-				if (y_speed > 0){
-					y_speed ++;
-				}
-				if (y_speed < 0){
-					y_speed -= 1;
-				}
-				if (dy > 0){
-					dy ++;
-				}
-				if (dy < 0){
-					dy -= 1;
-				}
+				x_speed += Math.abs(x_speed)/x_speed;
+				y_speed += Math.abs(y_speed)/y_speed;
+				dx += Math.abs(dx)/dx;
+				dy += Math.abs(dy)/dy;
 			}
+			document.querySelector("#ball_spd").innerHTML = `x speed: ${Math.abs(x_speed)}<br>y speed: ${Math.abs(y_speed)}`;
 			return true;
 		}
 		else if (xl > ball_top){
 			if (ball_down > xl){
 				if (xl >= ball_top){
 					times ++;
+					document.querySelector('#your_score').innerHTML = `your score: ${times}`;
 					if (times % 10 === 0){
-						if (x_speed > 0){
-							x_speed ++;
-						}
-						if (x_speed < 0){
-							x_speed -= 1;
-						}
-						if (dx > 0){
-							dx ++;
-						}
-						if (dx < 0){
-							dx -= 1;
-						}
-						if (y_speed > 0){
-							y_speed ++;
-						}
-						if (y_speed < 0){
-							y_speed -= 1;
-						}
-						if (dy > 0){
-							dy ++;
-						}
-						if (dy < 0){
-							dy -= 1;
-						}
+						x_speed += Math.abs(x_speed)/x_speed;
+						y_speed += Math.abs(y_speed)/y_speed;
+						dx += Math.abs(dx)/dx;
+						dy += Math.abs(dy)/dy;
 					}
+					document.querySelector("#ball_spd").innerHTML = `x speed: ${Math.abs(x_speed)}<br>y speed: ${Math.abs(y_speed)}`;
 					return true;
 				}
 			}
@@ -127,32 +100,14 @@ function isTouchLeft(ball) {
 			if (ball_top < left_down){
 				if (xl <= ball_top){
 					times ++;
+					document.querySelector('#your_score').innerHTML = `your score: ${times}`;
 					if (times % 10 === 0){
-						if (x_speed > 0){
-							x_speed ++;
-						}
-						if (x_speed < 0){
-							x_speed -= 1;
-						}
-						if (dx > 0){
-							dx ++;
-						}
-						if (dx < 0){
-							dx -= 1;
-						}
-						if (y_speed > 0){
-							y_speed ++;
-						}
-						if (y_speed < 0){
-							y_speed -= 1;
-						}
-						if (dy > 0){
-							dy ++;
-						}
-						if (dy < 0){
-							dy -= 1;
-						}
+						x_speed += Math.abs(x_speed)/x_speed;
+						y_speed += Math.abs(y_speed)/y_speed;
+						dx += Math.abs(dx)/dx;
+						dy += Math.abs(dy)/dy;
 					}
+					document.querySelector("#ball_spd").innerHTML = `x speed: ${Math.abs(x_speed)}<br>y speed: ${Math.abs(y_speed)}`;
 					return true;
 				}
 			}
@@ -163,8 +118,6 @@ function isTouchLeft(ball) {
 
 function animate() {
 	let ball = document.querySelector("#ball");
-	let html = document.querySelector("html");
-	let body = document.querySelector("body");
 	x += x_speed;
 	y += y_speed;
 	ball.style.left = `${x}px`;
@@ -186,7 +139,9 @@ function animate() {
 		}
 		if (x < 0) {
 			score_right ++;
-			document.querySelector("#right_score").innerHTML = score_right;
+			document.querySelector("#right_score").innerHTML = `your fails: ${score_right}`;
+			document.querySelector("#your_score").innerHTML = '';
+			times = 0;
 			x = window.innerWidth / 2;
 			x_speed = -x_speed
 			dx = -dx;
@@ -195,7 +150,7 @@ function animate() {
 	}
 	if (y + 64 > window.innerHeight || y < 0) {
 		y_speed = -y_speed;
-		dy = -dy
+		dy = -dy;
 	}
 	if(x_speed < 0){
 		if(isTouchLeft(ball)){
@@ -208,11 +163,13 @@ function animate() {
 }
 
 let change = function(t) {
+	document.querySelector("#ball_spd").innerHTML = `x speed: ${Math.abs(x_speed)}<br>y speed: ${Math.abs(y_speed)}`;
 	if (t) {
 		document.querySelector("#btn_cont").innerHTML = `
 			<button id="start" onclick="
 				x_speed = dx;
 				y_speed = dy;
+				stopped = false;
 				change(false);
 			">
 				continue
@@ -220,6 +177,7 @@ let change = function(t) {
 			<button id="restart" onclick="
 				score_right = 0;
 				document.querySelector('#right_score').innerHTML = '';
+				document.querySelector('#your_score').innerHTML = '';
 				start();">
 				restart
 			</button>
@@ -237,6 +195,7 @@ let change = function(t) {
 			<button id="restart" onclick="
 				score_right = 0;
 				document.querySelector('#right_score').innerHTML = '';
+				document.querySelector('#your_score').innerHTML = '';
 				start();">
 				restart
 			</button>
@@ -255,8 +214,11 @@ let start = function() {
 	document.querySelector("#visible").innerHTML = 3;
 	setTimeout(() => {
 		clearInterval(timer);
+		dx = 5;
+		yx = 5;
 		x_speed = dx;
 		y_speed = dy;
+		document.querySelector("#ball_spd").innerHTML = `x speed: ${Math.abs(x_speed)}<br>y speed: ${Math.abs(y_speed)}`;
 		ball.style.visibility = "visible";
 		left.style.visibility = "visible";
 		visible.style.visibility = "hidden";
@@ -265,12 +227,14 @@ let start = function() {
 		<button id="stop" onclick="
 			x_speed = 0;
 			y_speed = 0;
+			stopped = true;
 			change(true);">
 			stop
 		</button>
 		<button id="restart" onclick="
 			score_right = 0;
 			document.querySelector('#right_score').innerHTML = '';
+			document.querySelector('#your_score').innerHTML = '';
 			start();">
 			restart
 		</button>
@@ -281,4 +245,3 @@ let start = function() {
 		document.querySelector("#visible").innerHTML -= 1;
 	}, 1000);
 }
-

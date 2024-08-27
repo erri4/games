@@ -11,7 +11,7 @@
 	</head>
 	
 
-    <body onkeypress="move();" onkeyup="window.cancelAnimationFrame(request2);
+    <body onkeyup="window.cancelAnimationFrame(request2);
 		request2 = '';
 	">
 		<div id="help_cont">
@@ -23,17 +23,19 @@
 			<div id="btn_cont">
 				<button id="start" onclick="
 					start();
-					started = true
+					started = true;
 				">
 					start
 				</button>
-				<script type=”application/php”>echo "rr";</script>
 			</div>
 			<div id="btns">
 				<button id="helper" onclick="
 					this.disabled = true;
 					x_speed = 0;
 					y_speed = 0;
+					if (started){
+						document.querySelector('#ball_spd').innerHTML = `x speed: ${Math.abs(x_speed)}<br>y speed: ${Math.abs(y_speed)}`;
+					}
 					document.querySelector('#help_cont')
 						.innerHTML = `
 							<div id='help_con'>
@@ -63,7 +65,9 @@
 			</div>
 		</div>
 		<div id="cont">
-			<div id="right_score" class="score"></div>
+			<div id="right_score"></div>
+			<div id="your_score"></div>
+			<div id="ball_spd"></div>
 		</div>
 		<div id="visible"></div>
 		<div id="ball"></div>
