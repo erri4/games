@@ -3,6 +3,8 @@ let w = window.innerWidth;
 let h = window.innerHeight;
 let request1;
 let request2;
+let out;
+let interv;
 let dx = 5;
 let dy = 5;
 let xl = 50;
@@ -53,7 +55,7 @@ let move = function(e) {
 	}
 }
 
-document.addEventListener('keypress', move)
+document.addEventListener('keydown', move)
 
 function isTouchLeft(ball) {
 	let left = document.querySelector("#left");
@@ -176,6 +178,7 @@ let change = function(t) {
 			</button>
 			<button id="restart" onclick="
 				score_right = 0;
+				times = 0;
 				document.querySelector('#right_score').innerHTML = '';
 				document.querySelector('#your_score').innerHTML = '';
 				start();">
@@ -194,6 +197,7 @@ let change = function(t) {
 			</button>
 			<button id="restart" onclick="
 				score_right = 0;
+				times = 0;
 				document.querySelector('#right_score').innerHTML = '';
 				document.querySelector('#your_score').innerHTML = '';
 				start();">
@@ -205,20 +209,25 @@ let change = function(t) {
 
 let start = function() {
 	window.cancelAnimationFrame(request1);
+	clearInterval(interv);
+	clearTimeout(out);
 	x = 0;
 	y = 0;
+	document.querySelector("#visible").innerHTML = 3;
 	ball.style.visibility = "hidden";
 	left.style.visibility = "hidden";
+	document.querySelector("#ball_spd").style.visibility = 'hidden';
 	ball.style.left = `${x}px`;
 	ball.style.top = `${y}px`;
+	dx = 5;
+	dy = 5;
 	document.querySelector("#visible").innerHTML = 3;
-	setTimeout(() => {
-		clearInterval(timer);
-		dx = 5;
-		yx = 5;
+	out = setTimeout(() => {
+		clearInterval(interv);
 		x_speed = dx;
 		y_speed = dy;
 		document.querySelector("#ball_spd").innerHTML = `x speed: ${Math.abs(x_speed)}<br>y speed: ${Math.abs(y_speed)}`;
+		document.querySelector("#ball_spd").style.visibility = 'visible';
 		ball.style.visibility = "visible";
 		left.style.visibility = "visible";
 		visible.style.visibility = "hidden";
@@ -233,6 +242,7 @@ let start = function() {
 		</button>
 		<button id="restart" onclick="
 			score_right = 0;
+			times = 0;
 			document.querySelector('#right_score').innerHTML = '';
 			document.querySelector('#your_score').innerHTML = '';
 			start();">
@@ -241,7 +251,7 @@ let start = function() {
 		`
 	}, 3000);
 	visible.style.visibility = "visible";
-	let timer = setInterval(() => {
+	interv = setInterval(() => {
 		document.querySelector("#visible").innerHTML -= 1;
 	}, 1000);
 }
