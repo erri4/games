@@ -69,45 +69,34 @@ function update() {
         velocityX = 0;
     }
 
-    // Handle jumping
+
     if (keys.up && gameContainer.offsetHeight - playerY + 130 < window.innerHeight) {
         if (onGround) {
-            // Normal jump
             velocityY = -jumpPower;
-            canDoubleJump = true; // Reset double jump
+            canDoubleJump = true;
         } else if (canDoubleJump) {
-            // Double jump
             velocityY = -jumpPower;
-            canDoubleJump = false; // Disable double jump
+            canDoubleJump = false;
         } else if (isTouchingWall) {
-            // Wall jump: apply vertical and horizontal movement
-            velocityY = -wallJumpPower; // Jump upwards
-            velocityX = wallDirection * moveSpeed; // Jump away from the wall
-            canDoubleJump = true; // Allow double jump after wall jump
-            onGround = false; // Reset on ground status
+            velocityY = -wallJumpPower;
+            velocityX = wallDirection * moveSpeed;
+            canDoubleJump = true;
+            onGround = false;
         }
     }
 
-    // Apply gravity
-    velocityY += gravity;
 
-    // Update position
+    velocityY += gravity;
     playerX += velocityX;
     playerY += velocityY;
-
-    // Collision with the ground
     if (playerY + player.offsetHeight > gameContainer.offsetHeight) {
         playerY = gameContainer.offsetHeight - player.offsetHeight;
         velocityY = 0;
         onGround = true;
-        canDoubleJump = true; // Reset double jump after landing
+        canDoubleJump = true;
     }
-
-    // Prevent going out of bounds horizontally
     if (playerX < 0) playerX = 0;
     if (playerX + player.offsetWidth > gameContainer.offsetWidth) playerX = gameContainer.offsetWidth - player.offsetWidth;
-
-    // Apply new position
     player.style.left = `${playerX}px`;
     player.style.bottom = `${gameContainer.offsetHeight - playerY}px`;
 
