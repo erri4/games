@@ -16,7 +16,7 @@ html, body {
 #game-container {
     position: absolute;
     width: 100vw;
-    height: 650px;
+    height: 100%;
     background-color: #eee;
     overflow: hidden;
     display: flex;
