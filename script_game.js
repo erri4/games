@@ -259,35 +259,48 @@ let start = function() {
 let drag = function(left) {
 	let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-	left.onmousedown = function(e) {
-		e.preventDefault();
-		pos3 = e.clientX;
-		pos4 = e.clientY;
+	left.onmousedown = dragStart;
+	left.ontouchstart = dragStart;
 
-		document.onmouseup = closeDragElement;
-		document.onmousemove = elementDrag;
-	};
+	function dragStart(e) {
+		e.preventDefault();
+		if (e.type === 'touchstart') {
+			pos3 = e.touches[0].clientX;
+			pos4 = e.touches[0].clientY;
+			document.ontouchend = closeDragElement;
+			document.ontouchmove = elementDrag;
+		} else {
+			pos3 = e.clientX;
+			pos4 = e.clientY;
+			document.onmouseup = closeDragElement;
+			document.onmousemove = elementDrag;
+		}
+	}
 
 	function elementDrag(e) {
 		e.preventDefault();
 
-		pos1 = pos3 - e.clientX;
-		pos2 = pos4 - e.clientY;
-		pos3 = e.clientX;
-		pos4 = e.clientY;
+		let clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+		let clientY = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
+
+		pos1 = pos3 - clientX;
+		pos2 = pos4 - clientY;
+		pos3 = clientX;
+		pos4 = clientY;
 
 		let newTop = left.offsetTop - pos2;
 
-		// Movement limits hardcoded: min = 10px, max = window height - 1 - 140
 		if (newTop >= 10 && newTop + 140 <= window.innerHeight - 1) {
-			xl = newTop; // update the shared variable for keyboard sync
+			xl = newTop;
 			left.style.top = xl + "px";
 		}
 	}
 
-	function closeDragElement() {
+	function closeDragElement(e) {
 		document.onmouseup = null;
 		document.onmousemove = null;
+		document.ontouchend = null;
+		document.ontouchmove = null;
 	}
 };
 
