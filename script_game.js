@@ -255,3 +255,40 @@ let start = function() {
 		document.querySelector("#visible").innerHTML -= 1;
 	}, 1000);
 }
+
+let drag = function(left) {
+	let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+	left.onmousedown = function(e) {
+		e.preventDefault();
+		pos3 = e.clientX;
+		pos4 = e.clientY;
+
+		document.onmouseup = closeDragElement;
+		document.onmousemove = elementDrag;
+	};
+
+	function elementDrag(e) {
+		e.preventDefault();
+
+		pos1 = pos3 - e.clientX;
+		pos2 = pos4 - e.clientY;
+		pos3 = e.clientX;
+		pos4 = e.clientY;
+
+		let newTop = left.offsetTop - pos2;
+
+		// Movement limits hardcoded: min = 10px, max = window height - 1 - 140
+		if (newTop >= 10 && newTop + 140 <= window.innerHeight - 1) {
+			xl = newTop; // update the shared variable for keyboard sync
+			left.style.top = xl + "px";
+		}
+	}
+
+	function closeDragElement() {
+		document.onmouseup = null;
+		document.onmousemove = null;
+	}
+};
+
+drag (document.querySelector("#left"));
