@@ -33,7 +33,7 @@ let clos = function(){
 }
 
 let move = function(e) {
-	let left = document.querySelector("#left");
+	let left = document.querySelector("#realleft");
 	let key = e.key;
 	if (x_speed && y_speed) {
 		if (key === "ArrowUp") {
@@ -58,7 +58,7 @@ let move = function(e) {
 document.addEventListener('keydown', move)
 
 function isTouchLeft(ball) {
-	let left = document.querySelector("#left");
+	let left = document.querySelector("#realleft");
 	left.style.right = "90px";
 	
 	let posr = String(left.style.right).split("p");
@@ -211,11 +211,13 @@ let start = function() {
 	window.cancelAnimationFrame(request1);
 	clearInterval(interv);
 	clearTimeout(out);
+	left = document.querySelector("#realleft")
 	x = 0;
 	y = 0;
 	document.querySelector("#visible").innerHTML = 3;
 	ball.style.visibility = "hidden";
 	left.style.visibility = "hidden";
+	left.style.top = "50px";
 	document.querySelector("#ball_spd").style.visibility = 'hidden';
 	ball.style.left = `${x}px`;
 	ball.style.top = `${y}px`;
@@ -264,16 +266,18 @@ let drag = function(left) {
 
 	function dragStart(e) {
 		e.preventDefault();
-		if (e.type === 'touchstart') {
-			pos3 = e.touches[0].clientX;
-			pos4 = e.touches[0].clientY;
-			document.ontouchend = closeDragElement;
-			document.ontouchmove = elementDrag;
-		} else {
-			pos3 = e.clientX;
-			pos4 = e.clientY;
-			document.onmouseup = closeDragElement;
-			document.onmousemove = elementDrag;
+		if (x_speed && y_speed){
+			if (e.type === 'touchstart') {
+				pos3 = e.touches[0].clientX;
+				pos4 = e.touches[0].clientY;
+				document.ontouchend = closeDragElement;
+				document.ontouchmove = elementDrag;
+			} else {
+				pos3 = e.clientX;
+				pos4 = e.clientY;
+				document.onmouseup = closeDragElement;
+				document.onmousemove = elementDrag;
+			}
 		}
 	}
 
@@ -288,11 +292,11 @@ let drag = function(left) {
 		pos3 = clientX;
 		pos4 = clientY;
 
-		let newTop = left.offsetTop - pos2;
+		let newTop = document.querySelector("#realleft").offsetTop - pos2;
 
 		if (newTop >= 10 && newTop + 140 <= window.innerHeight - 1) {
 			xl = newTop;
-			left.style.top = xl + "px";
+			document.querySelector("#realleft").style.top = xl + "px";
 		}
 	}
 

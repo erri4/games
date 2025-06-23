@@ -39,15 +39,24 @@ body{
 	visibility: hidden;
 }
 
-#left{
-	left: 70px;
-	background-color: black;
-	position: absolute;
-	width: 20px;
-	height: 100px;
+#realleft{
+	left: 40px;
+    background-color: black;
+    position: absolute;
+    width: 20px;
+    height: 100px;
 	top: 50px;
 	z-index: 2;
-	visibility: hidden;
+    visibility: hidden;
+}
+
+#left{
+    left: 50px;
+    position: absolute;
+    width: 100px;
+    top: 0;
+    z-index: 2;
+    bottom: 0;
 }
 
 #help_container{
