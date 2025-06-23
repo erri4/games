@@ -50,6 +50,11 @@ body{
     visibility: hidden;
 }
 
+#btn{
+	z-index: 3;
+    position: absolute;
+}
+
 #left{
     left: 50px;
     position: absolute;
