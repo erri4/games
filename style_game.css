@@ -55,6 +55,10 @@ body{
     position: absolute;
 }
 
+#cont{
+	margin-top: 24px;
+}
+
 #left{
     left: 50px;
     position: absolute;
