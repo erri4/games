@@ -62,7 +62,7 @@ function isTouchLeft(ball) {
 	left.style.right = "90px";
 	
 	let posr = String(left.style.right).split("p");
-	posr = Number(posr[0]);
+	posr = Number(posr[0]) + 20;
 	let left_down = xl + 100;
 	let ball_left = String(ball.style.left).split("p");
 	ball_left = Number(ball_left[0]);
@@ -134,8 +134,8 @@ function animate() {
 			w = window.innerWidth;
 		}
 	}
-	if (x + 59 > window.innerWidth || x < 0) {
-		if (x + 59 > window.innerWidth) {
+	if (x + 59 > window.innerWidth - 8 || x < 0) {
+		if (x + 59 > window.innerWidth - 8) {
 			x_speed = -x_speed;
 			dx = -dx;
 		}
@@ -150,7 +150,7 @@ function animate() {
 			y = 0;
 		}
 	}
-	if (y + 64 > window.innerHeight || y < 0) {
+	if (y + 64 > window.innerHeight - 8 || y < 5) {
 		y_speed = -y_speed;
 		dy = -dy;
 	}
